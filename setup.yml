@@ -1,0 +1,67 @@
+---
+- name: Hello Ansible - https://gist.github.com/Lewiscowles1986/fecd4de0b45b2029c390
+  hosts: rpi
+  become_user: root
+  become: yes
+
+  tasks:    
+    - name: Update apt-get cache
+      apt: >
+        update_cache=yes
+        cache_valid_time=360   
+    - name: Update all packages to the latest version
+      apt: > 
+        upgrade=yes
+
+    - name: Remove repositorie "hostapd" package
+      apt:
+        name: hostapd 
+        state: absent
+        purge: yes
+    
+    - name: Remove repositorie "dnsmasq" package
+      apt:
+        name: dnsmasq 
+        state: absent
+        purge: yes
+
+    - name: Install repositorie "hostapd" package
+      apt:
+        name: hostapd
+
+    - name: Install repositorie "dnsmasq" package
+      apt:
+        name: dnsmasq
+
+    - name: hostapd.service
+      copy:
+        src: ./hostapd.service
+        dest: /etc/systemd/system/hostapd.service
+
+    - name: nsmasq.conf 
+      copy:
+        src: ./nsmasq.conf 
+        dest: /etc/dnsmasq.conf
+
+    - name: hostapd.conf
+      copy:
+        src: ./hostapd.conf
+        dest: /etc/hostapd/hostapd.conf
+
+    - name: /etc/network/interfaces
+      copy:
+        src: ./interfaces
+        dest: /etc/network/interfaces
+
+    - name: dhcpcd.conf
+      lineinfile:
+        create: yes
+        state: present
+        dest: /etc/dhcpcd.conf
+        line: 'denyinterfaces wlan0'
+
+    - name: Start hostapd
+      service:
+        name: hostapd
+        state: started
+
