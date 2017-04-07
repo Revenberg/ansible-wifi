@@ -51,7 +51,7 @@
     - name: /etc/network/interfaces
       copy:
         src: ./interfaces
-        dest: /tmp/interfaces
+        dest: /etc/network/interfaces
 
     - name: dhcpcd.conf
       lineinfile:
