@@ -38,9 +38,9 @@
         src: ./hostapd.service
         dest: /etc/systemd/system/hostapd.service
 
-    - name: nsmasq.conf 
+    - name: dnsmasq.conf 
       copy:
-        src: ./nsmasq.conf 
+        src: ./dnsmasq.conf 
         dest: /etc/dnsmasq.conf
 
     - name: hostapd.conf
