@@ -60,6 +60,19 @@
         dest: /etc/dhcpcd.conf
         line: 'denyinterfaces wlan0'
 
+    - name: hostapd 1
+      lineinfile:
+        state: absent
+        dest: /etc/default/hostapd
+        line: '#DAEMON_CONF=""'
+
+    - name: hostapd 2
+      lineinfile:
+        create: yes
+        state: present
+        dest: /etc/default/hostapd
+        line: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+
     - name: Start hostapd
       service:
         name: hostapd
